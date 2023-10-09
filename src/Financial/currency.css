@@ -1,0 +1,114 @@
+.contain{
+    height:100%;
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.search{
+    height:6rem;
+    width:60%;
+    display: flex;
+    justify-content: center;
+    border-radius: 20px;
+    background-color: #fff;
+    margin: 4rem;
+}
+img{
+    height:5rem;
+}
+input{
+    height: 3rem;
+    width:90%;
+    outline:none;
+    border:none;
+    gap:1rem
+}
+.feeds{
+    height:100%;
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    flex-grow: inherit;
+}
+.popu{
+    transition: all 0.5s ease-out;
+    height: 5rem;
+    width:4rem;
+    background-color:#bbec0a
+    /* margin-left: -100px; */
+}
+.sign{
+    margin-left: -5px;
+    font-size: 2rem;
+}
+
+button{
+    width: 2.5rem;
+    background-color: #bbec0a;
+    border: none;
+    font-size: 2rem;
+        transition: all 0.5s ease-out;
+            margin-left: -32px;
+}
+button:hover{
+    color: #fff;
+        transition: all 0.5s ease-in;
+        margin-left: 10px;
+}
+.container{
+    height:100%;
+    width:60%;
+    border:1px solid blue;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap:2rem;
+}
+.sear{
+    height:100%;
+    width:80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+}
+.seari {
+    height: 100%;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+label{
+    margin-bottom:0px;
+}
+.search_btn{
+    height:3rem;
+    width:6rem;
+    border-radius: 10px;
+    background-color: #bbec0a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+        transition: all 0.5s ease-out;
+        margin-bottom: 2rem;
+}
+.search_btn:hover {
+        transition: all 0.5s ease-in;
+        cursor: pointer;
+        transform: scale(1.09);
+        color: #fff;
+        box-shadow: 10px 05px 10px rgb(224, 235, 179);
+}
+.feed{
+    height: 100%;
+    width: 80%;
+    background:#fff;
+    border-radius: 18px;
+}
+

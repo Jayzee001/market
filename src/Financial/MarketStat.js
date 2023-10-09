@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import searcch from '../Assets/search-removebg-preview.png';
-import { Line } from 'react-chartjs-2';
-
 import Table from 'react-bootstrap/Table';
+import './currency.css'
 
 function ResponsiveExample() {
     const Apikey = '5842a81f8974dbda412ef2e5c691ec37';
-  const [chartData, setChartData] = useState(null);
+  const [data, setData] = useState([]);
 
+    
   const search = async () => {
   try {
     const elementT = document.getElementsByClassName('stock');
@@ -25,62 +25,63 @@ function ResponsiveExample() {
     }
 
     const responseData = await resp.json();
-    console.log(responseData);
-const openValues = responseData.data.map(item => item.open);
-const closeValues = responseData.data.map(item => item.close);
-      const high = responseData.data.map(item => item.high);
-      const low = responseData.data.map(item => item.low);
-      const volume = responseData.data.map(item => item.volume);
-const adj_openValues = responseData.data.map(item => item.adj_open);
-const adj_closeValues = responseData.data.map(item => item.adj_close);
-      const adj_high = responseData.data.map(item => item.high);
-      const adj_low = responseData.data.map(item => item.adj_low);
-      const adj_volume = responseData.data.map(item => item.adj_volume);
-        const date = responseData.data.map(item => item.date);
-    setChartData(chartData);
+      console.log(responseData);
+    setData(responseData.data.map(item=>item));
+    // setChartData(chartData);
   } catch (error) {
     console.error('Error fetching data:', error);
   }
 };
     return (
-           <div>
+           <div className='contain'>
       <h1>Market Statistics App</h1>
       <div className='search'>
-        <input type='text' className='stock' placeholder='AAPL - Search' />
-        <span onClick={search} className='search_btn'>
+        <input type='text' className='stock' placeholder='AAPL, MSFT - Search' />
+        <span onClick={search} >
           <img src={searcch} alt='logo' />
         </span>
-            </div> 
-    <Table responsive>
-      <thead>
-        <tr>
-          <th>#</th>
-          {Array.from({ length: 12 }).map((_, index) => (
-            <th key={index}>Table heading</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          {Array.from({ length: 12 }).map((_, index) => (
-            <td key={index}>Table cell {index}</td>
-          ))}
-        </tr>
-        <tr>
-          <td>2</td>
-          {Array.from({ length: 12 }).map((_, index) => (
-            <td key={index}>Table cell {index}</td>
-          ))}
-        </tr>
-        <tr>
-          <td>3</td>
-          {Array.from({ length: 12 }).map((_, index) => (
-            <td key={index}>Table cell {index}</td>
-          ))}
-        </tr>
-      </tbody>
-                </Table>
+            </div>
+        <div className='feeds'>
+          <Table responsive="sm">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Opening value</th>
+            <th>Adjecent Opening value </th>
+            <th>Adjecent High</th>
+            <th>High</th>
+            <th>Low</th>
+            <th>Adjecent Low</th>
+            <th>Adjecent Closing value</th>
+            <th>Closing value</th>
+            <th>Volume</th>
+            <th>Adjecent Volume</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+
+          {data &&
+                    data.map((item, index) => (
+                <tbody>
+              <tr key={index}>
+                <td style={{background:'#fff'}}>{index + 1}</td>
+                    <td style={{background:'#fda172'}} >{item.open}</td>
+                    <td style={{background:'#fda132'}} >{ item.adj_open}</td>
+                    <td style={{background:'#b0fc38'}} >{ item.adj_high}</td>
+                    <td style={{background:'#74b72e'}} >{ item.high}</td>
+                    <td style={{background:'#d21404'}}>{ item.low}</td>
+                    <td style={{background:'#bc544b'}}>{ item.adj_low}</td>
+                    <td style={{ background: item.adj_close > item.adj_open ? '#00FF00' : '#FF0000' }} >{ item.adj_close}</td>
+                    <td style={{ background: item.close > item.open ? '#00FF00' : '#FF0000' }}>{ item.close}</td>
+                    <td style={{ background: item.close > item.open ? '#00FF99' : '#900d09', color:'#fff' }} >{ item.volume}</td>
+                    <td style={{ background: item.close > item.open ? '#00Fe92' : '#680c07', color:'#fff' }}>{ item.adj_volume}</td>
+                                        <td style={{background:'#fff'}} >{item.date}</td>
+              </tr>
+                </tbody>
+            ))}
+
+      </Table>
+            </div>
       </div>      
   );
 }

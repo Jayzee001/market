@@ -1,62 +1,80 @@
-import { useState } from 'react'; 
-import searcch from '../Assets/search-removebg-preview.png';
-
+import React, { useState } from 'react';
+import searchImage from '../Assets/search-removebg-preview.png';
 
 const CurrencyValue = () => {
+  const [data, setData] = useState([]);
+  const [multipliedValues, setMultipliedValues] = useState({});
 
-// Api private key
-    const Apikey = '88e2718d827479142bb4a06e6bbca911';
-    // example of currencies
-    const currencies = 'EUR,GBP,CAD,PLN';
+  const Apikey = '88e2718d827479142bb4a06e6bbca911';
 
- const Search = async () => {
-  try {
-    const element = document.getElementsByClassName('main_currencies');
-    if (element[0].value === '') {
-      return 0;
+  const Search = async () => {
+    try {
+      const currenciesInput = document.querySelector('.currencies');
+      const mainCurrencyInput = document.querySelector('.main_currencies');
+      const amountInput = document.querySelector('.amount');
+
+      if (!currenciesInput.value || !mainCurrencyInput.value || !amountInput.value) {
+        alert('Please enter both main currency, target currency, and amount.');
+        return;
       }
-        const Three = document.getElementsByClassName('currencies');
-    if (Three[0].value === '') {
-    return 0;
+
+      const url = `http://apilayer.net/api/live?access_key=${Apikey}&currencies=${currenciesInput.value}&source=${mainCurrencyInput.value}&format=1`;
+
+      const resp = await fetch(url);
+
+      if (!resp.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const jsonData = await resp.json();
+      const quotes = jsonData.quotes;
+      setData(quotes);
+
+      // Calculate the multiplied value for each currency
+      const multipliedValuesData = {};
+      Object.entries(quotes).forEach(([currency, value]) => {
+        multipliedValuesData[currency] = value * parseFloat(amountInput.value);
+      });
+      setMultipliedValues(multipliedValuesData);
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
-
-    const url = `http://apilayer.net/api/live?access_key=${Apikey}&currencies=${Three[0].value}&source=${element[0].value}&format=1`;
-
-    const resp = await fetch(url);
-
-    if (!resp.ok) {
-      throw new Error('Network response was not ok');
-    }
-
-    const data = await resp.json();
-    console.log(data);
-  } catch (error) {
-    console.error('Error fetching data:', error);
-  }
-};
+  };
 
   return (
     <div className='container'>
-        <h1>Currency Value App</h1>
-          <div className='sear'>
+      <h1>Currency Value App</h1>
+      <div className='seari'>
+        <span className='sear'>
+        <label>Currencies</label>
         <input type='text' className='currencies' placeholder='EUR,GBP,CAD,PLN - search' />
+        <label>Main Currency</label>
         <input type='text' className='main_currencies' placeholder='USD - Search' />
-          <span onClick={() =>{Search()}} className='search_btn'>
-            <img  src={searcch} alt='logo'/>
+        <label>Amount</label>
+        <input type='number' step='any' className='amount' placeholder='Amount in the main currency' />
+        </span>
+        <span onClick={Search} className='search_btn'>
+          <h5>Submit</h5>
           </span>
-          </div>
+      </div>
+      {Object.keys(data).length > 0 && (
+        <div className='feed'>
+          <h4>Quotes:</h4>
+          <ul>
+            {Object.entries(data).map(([currency, value], index) => (
+              <div key={index}>
+                <li>
+                  {currency}: {value}
+                  <br />
+                  {currency} = {multipliedValues[currency]}
+                </li>
+              </div>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default CurrencyValue
-
-
-
-
-
-
-
-
-
-
+export default CurrencyValue;
